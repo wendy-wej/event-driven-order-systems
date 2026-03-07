@@ -1,0 +1,8 @@
+spring.application.name=order-system
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/trading_db
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
