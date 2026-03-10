@@ -16,26 +16,31 @@ public class Order {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="symbol", length=15, nullable=false, unique=false)
+    @Column(length=10, nullable=false)
     private String symbol;
 
-    @Column(name="side", length=15, nullable=false, unique=false)
+    @Column(length=4, nullable=false)
     private String side;
 
-    @Column
+    @Column(nullable=false)
     private Integer quantity;
 
-    @Column
+    @Column(nullable=false)
     private BigDecimal price;
 
-    @Column
+    @Column(nullable=false)
     private String status = "PENDING";
 
-    @Column(name = "retry_count")
+    @Column(name = "retry_count", nullable = false)
     private Integer retryCount = 0;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
