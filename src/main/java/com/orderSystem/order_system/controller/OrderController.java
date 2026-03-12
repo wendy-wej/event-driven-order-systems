@@ -1,6 +1,8 @@
 package com.orderSystem.order_system.controller;
+import com.orderSystem.order_system.dto.CreateOrderRequest;
 import com.orderSystem.order_system.model.Order;
 import com.orderSystem.order_system.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +18,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping()
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order savedOrder = orderService.createOrder(order);
+    public ResponseEntity<Order> createOrder(@RequestBody @Valid CreateOrderRequest request) {
+        Order savedOrder = orderService.createOrder(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
     }
 

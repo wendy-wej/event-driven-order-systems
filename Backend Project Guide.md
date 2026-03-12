@@ -22,8 +22,8 @@ Update the **Current Progress** section below after every session so Claude alwa
 
 ```
 Current Week: 1
-Current Day:  5
-Last completed task: (none yet)
+Current Day:  7
+Last completed task: Day 6 — Input validation with DTO, @Valid, and GlobalExceptionHandler returning clean 400 errors
 Blockers / Questions: (none yet)
 ```
 

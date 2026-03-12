@@ -1,5 +1,6 @@
 package com.orderSystem.order_system.service;
 
+import com.orderSystem.order_system.dto.CreateOrderRequest;
 import com.orderSystem.order_system.model.Order;
 import com.orderSystem.order_system.repository.OrderRepository;
 import jakarta.transaction.Transactional;
@@ -14,7 +15,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public Order createOrder(Order order) {
+    public Order createOrder(CreateOrderRequest request) {
+        Order order = new Order();
+        order.setSymbol(request.getSymbol());
+        order.setSide(request.getSide());
+        order.setQuantity(request.getQuantity());
+        order.setPrice(request.getPrice());
         return orderRepository.save(order);
     }
 
