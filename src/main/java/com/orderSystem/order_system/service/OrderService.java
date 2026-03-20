@@ -47,4 +47,9 @@ public class OrderService {
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
+
+    @Transactional
+    public void updateOrder(Order order){
+        orderRepository.save(order);
+    }
 }
