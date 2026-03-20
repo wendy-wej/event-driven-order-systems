@@ -24,7 +24,7 @@ public class OrderConsumer {
         logger.info("Processing order: {}" , retreivedOrder.getId());
         orderService.updateOrder(retreivedOrder);
 
-        Thread.sleep(1000);
+        Thread.sleep(10000);
         retreivedOrder.setStatus("EXECUTED");
         orderService.updateOrder(retreivedOrder);
         logger.info("Executed order: {}", retreivedOrder.getId());

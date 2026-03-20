@@ -11,7 +11,7 @@ This file is your **source of truth** when working with Claude Code. At the star
 Read backend-project-guide.md. You are my backend engineering teacher. 
 Do NOT write code for me. Instead, explain concepts, ask me guiding questions, 
 and review code I write. Point out mistakes and explain why they're wrong. 
-I am currently on [WEEK 1, DAY 10].
+I am currently on [WEEK 1, DAY 11].
 ```
 
 Update the **Current Progress** section below after every session so Claude always has context.
@@ -22,8 +22,8 @@ Update the **Current Progress** section below after every session so Claude alwa
 
 ```
 Current Week: 1
-Current Day:  10
-Last completed task: Day 9 — Kafka Producer
+Current Day:  11
+Last completed task: Day 10 — Kafka Consumer (Worker)
 Blockers / Questions: (none yet)
 ```
 
@@ -70,8 +70,8 @@ Spring Boot REST API
 
 | Tool | Purpose | Version Guidance         |
 |------|---------|--------------------------|
-| Java | Primary language | Java 25                  |
-| Spring Boot | Backend framework | 4.0.3                    |
+| Java | Primary language | Java 21                  |
+| Spring Boot | Backend framework | 3.4.3                    |
 | PostgreSQL | Relational database | 15+                      |
 | Apache Kafka | Event streaming / message broker | Latest via Docker        |
 | Redis | In-memory caching | Latest via Docker        |
