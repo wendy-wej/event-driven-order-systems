@@ -1,6 +1,8 @@
 package com.orderSystem.order_system.service;
 
 import com.orderSystem.order_system.dto.CreateOrderRequest;
+import com.orderSystem.order_system.kafka.OrderCreatedEvent;
+import com.orderSystem.order_system.kafka.OrderProducer;
 import com.orderSystem.order_system.model.Order;
 import com.orderSystem.order_system.repository.OrderRepository;
 import jakarta.transaction.Transactional;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final OrderProducer orderProducer;
 
     @Transactional
     public Order createOrder(CreateOrderRequest request) {
@@ -21,7 +24,18 @@ public class OrderService {
         order.setSide(request.getSide());
         order.setQuantity(request.getQuantity());
         order.setPrice(request.getPrice());
-        return orderRepository.save(order);
+
+        Order savedOrder = orderRepository.save(order);
+
+        OrderCreatedEvent event = new OrderCreatedEvent(
+                savedOrder.getId(),
+                savedOrder.getSymbol(),
+                savedOrder.getSide(),
+                savedOrder.getQuantity(),
+                savedOrder.getPrice()
+        );
+        orderProducer.publishMessage(event);
+        return savedOrder;
     }
 
     public Order getOrderbyId(Long id){
@@ -32,5 +46,10 @@ public class OrderService {
 
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
+    }
+
+    @Transactional
+    public void updateOrder(Order order){
+        orderRepository.save(order);
     }
 }
