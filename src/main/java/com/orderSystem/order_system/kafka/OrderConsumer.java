@@ -25,9 +25,16 @@ public class OrderConsumer {
         orderService.updateOrder(retreivedOrder);
 
         Thread.sleep(10000);
-        retreivedOrder.setStatus("EXECUTED");
-        orderService.updateOrder(retreivedOrder);
-        logger.info("Executed order: {}", retreivedOrder.getId());
+        boolean simulateError = Math.random() < 0.2;
+        if (simulateError) {
+            retreivedOrder.setStatus("FAILED");
+            orderService.updateOrder(retreivedOrder);
+            logger.error("Failed order: {}", retreivedOrder.getId());
+        } else {
+            retreivedOrder.setStatus("EXECUTED");
+            orderService.updateOrder(retreivedOrder);
+            logger.info("Executed order: {}", retreivedOrder.getId());
+        }
     }
 
 }
