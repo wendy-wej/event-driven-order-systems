@@ -7,6 +7,8 @@ import com.orderSystem.order_system.model.Order;
 import com.orderSystem.order_system.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderProducer orderProducer;
+    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     @Transactional
     public Order createOrder(CreateOrderRequest request) {
@@ -34,6 +37,7 @@ public class OrderService {
                 savedOrder.getQuantity(),
                 savedOrder.getPrice()
         );
+        logger.info("Order {} created", savedOrder.getId());
         orderProducer.publishMessage(event);
         return savedOrder;
     }
