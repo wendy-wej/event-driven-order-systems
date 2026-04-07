@@ -14,6 +14,7 @@ public class OrderConsumer {
 
     private final OrderService orderService;
     private static final Logger logger = LoggerFactory.getLogger(OrderConsumer.class);
+    private final OrderProducer orderProducer;
 
     @KafkaListener(topics = "order-created")
     public void consume(OrderCreatedEvent event) throws InterruptedException {
@@ -25,9 +26,25 @@ public class OrderConsumer {
         orderService.updateOrder(retreivedOrder);
 
         Thread.sleep(10000);
-        retreivedOrder.setStatus("EXECUTED");
-        orderService.updateOrder(retreivedOrder);
-        logger.info("Executed order: {}", retreivedOrder.getId());
+        boolean simulateError = Math.random() < 0.2;
+        if (simulateError) {
+            Integer retryCount = retreivedOrder.getRetryCount();
+            if (retryCount < 3){
+                retreivedOrder.setStatus("RETRY");
+                retreivedOrder.setRetryCount(retryCount + 1);
+                orderService.updateOrder(retreivedOrder);
+                orderProducer.publishMessage(event);
+                logger.warn("Retrying order {}. This is attempt: {}", retreivedOrder.getId(), retreivedOrder.getRetryCount());
+            }else{
+                retreivedOrder.setStatus("FAILED");
+                orderService.updateOrder(retreivedOrder);
+                logger.error("Failed to process order: {} after 3 attempts", retreivedOrder.getId());
+            }
+        } else {
+            retreivedOrder.setStatus("EXECUTED");
+            orderService.updateOrder(retreivedOrder);
+            logger.info("Executed order: {}", retreivedOrder.getId());
+        }
     }
 
 }
